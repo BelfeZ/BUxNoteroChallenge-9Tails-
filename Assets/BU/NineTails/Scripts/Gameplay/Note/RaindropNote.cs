@@ -2,6 +2,7 @@ using Notero.Unity.MidiNoteInfo;
 using Notero.Utilities.Pooling;
 using System.ComponentModel.DataAnnotations;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace BU.NineTails.MidiGameplay.Scripts.Gameplay
 {
@@ -40,6 +41,8 @@ namespace BU.NineTails.MidiGameplay.Scripts.Gameplay
         protected float m_Length => (float)MidiNoteInfo.GetNoteDurationInMilliseconds() / 1000f * m_Speed;
 
         private bool hasSpawned = false;
+        private Image noteAlphaImage;
+        private Image noteSymbolImage;
 
         private void Start()
         {
@@ -63,11 +66,14 @@ namespace BU.NineTails.MidiGameplay.Scripts.Gameplay
         public virtual void SetCorrect()
         {
             SetFeedbackEffect(true);
+            ChangeNoteColor(Color.green);
+            
         }
 
         public virtual void SetMiss()
         {
             SetFeedbackEffect(false);
+            
         }
 
         //TODO: remove if hold on mode is confirm visual
@@ -133,7 +139,17 @@ namespace BU.NineTails.MidiGameplay.Scripts.Gameplay
 
             leftObject.transform.SetParent(transform);
             rightObject.transform.SetParent(transform);
+            
+            noteAlphaImage = leftObject.GetComponent<Image>();
+            noteSymbolImage = rightObject.GetComponent<Image>();
+            
+            ChangeNoteColor(Color.white);
+        }
 
+        public void ChangeNoteColor(Color color)
+        {
+            noteAlphaImage.color = color;
+            noteSymbolImage.color = color;
         }
 
         void Update()
